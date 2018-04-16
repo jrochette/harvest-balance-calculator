@@ -17,10 +17,9 @@ jobs:
       - run:
           name: gitbook deploy on firebase
           command: |
-            jq -n --arg publicpath docs '{"hosting": {"public": "\($publicpath)"}}' > firebase.json
-            jq -n '{"projects": {"prod": "harvest-balance-calculator"}}' > .firebaserc
-            gitbook build docs
-            firebase deploy --only hosting
+            sh /scripts/gitbook-build.sh ${GITBOOK_PATH}
+            sh /scripts/gitbook-firebase-init.sh ${GITBOOK_PATH}/_book ${GITBOOK_FIREBASE_APP}
+            sh /scripts/firebase-deploy-only-hosting.sh gitbook ${GITBOOK_FIREBASE_TOKEN}
 
 workflows:
   version: 2
