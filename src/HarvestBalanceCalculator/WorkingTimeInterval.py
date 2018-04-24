@@ -1,5 +1,6 @@
 import os
 
+from datetime import datetime
 from datetime import timedelta
 from dateutil.parser import parse
 
@@ -10,7 +11,10 @@ class WorkingTimeInterval:
     def __init__(self):
         self.working_preference = WorkingPreference()
         self.begin_date = parse(os.environ['BEGIN_DATE']).date()
-        self.end_date = parse(os.environ['END_DATE']).date()
+        try:
+            self.end_date = parse(os.environ['END_DATE']).date()
+        except:
+            self.end_date = datetime.today().date() - timedelta(days=1)
 
     def get_number_of_working_days(self):
         delta = (self.end_date - self.begin_date)
